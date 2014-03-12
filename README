@@ -1,0 +1,21 @@
+actionmailer (2.0.2)
+actionpack (2.0.2)
+activemerchant
+activerecord (2.0.2)
+activeresource (2.0.2)
+activesupport (2.0.2)
+builder
+cgi_multipart_eof_fix
+daemons
+fastthread
+gem_plugin
+mime-types
+mongrel
+mongrel_cluster
+more_money
+postgres
+rails (2.0.2)
+rake
+rmagick
+simple_descriptor
+writeexcel

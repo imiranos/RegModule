@@ -1,3 +1,12 @@
+Published 1 contnroller, views for it and 2 models used in that controller
+
+*Ruby: ruby 1.8.5 (2006-08-25)
+*Rails version: 2.0.2
+*PostgreSQL: 8.1
+
+
+#GEMS
+
 actionmailer (2.0.2)
 actionpack (2.0.2)
 activemerchant

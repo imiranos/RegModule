@@ -1,0 +1,51 @@
+<%= form_error_alert @booking %>
+<% fields_for :booking, @booking, :builder => LabelledForm::LabelledFormBuilder do |booking_fields| %>
+<!--[form:tbbooking]-->
+  <fieldset>
+    <legend>Contact Details</legend>
+    <dl>
+      <%= booking_fields.text_field :fdtitle %>
+      <%= booking_fields.text_field :fdforename %>
+      <%= booking_fields.text_field :fdsurname %>
+      <%= booking_fields.text_field :fdjob_title %>
+      <%= booking_fields.text_field :fdorganisation %>
+      <% ('1'..'5').each do |num| %>
+        <%= booking_fields.text_field "fdaddress_line_#{num}".to_sym %>
+      <% end %>
+      <%= booking_fields.text_field :fdpostcode %>
+      <%= booking_fields.country_select :fdcountry %>
+      <%= booking_fields.text_field :fdtel %>
+      <%= booking_fields.text_field :fdfax %>
+      <%= booking_fields.text_field :fdemail %>
+      <%= booking_fields.text_field :fdemail_confirmation, :maxlength => 100, :size => 50 %>
+    </dl>
+  </fieldset>
+  <% unless session[:bookcart].free_of_charge? %>
+    <fieldset>
+      <legend>Billing details</legend>
+      <dl>
+      <%= booking_fields.select :payment_method, payment_choice_options %>
+      <%= booking_fields.check_box :contactcopy, :onclick => copy_billing_data %>
+      <%= render(:partial => 'super_booking/booking_billing_details', :locals => {:booking_fields => booking_fields}) %>
+      </dl>
+    </fieldset>
+  <% end %>
+  <fieldset>
+    <legend><em class="red_text">Terms and Conditions</em></legend>
+    <div id="terms_text" class="long_text red_border">
+      <%= event_text('terms_and_conditions') %>
+      <p><strong>Cancellation policy:</strong></p>
+      <%= simple_format(h(@event.fdcancellation_policy)) %>
+      <%= check_box 'booking', 'termsaccept' %>
+      <label for="booking_termsaccept">Accept terms and conditions</label>
+      <%= error_message_on('booking', 'termsaccept') %>
+    </div>
+    <p><strong>Privacy Agreement:</strong></p>
+    <% privacy_agreement = check_box 'booking', 'fdprivacy', :class => "goleft" %>
+    <%= event_text('privacy_agreement', :before_text => privacy_agreement) %>
+    <% privacy_3d_parties_agreement = check_box 'booking', 'fdprivacy_3rd_party', :class => "goleft" %>
+    <%= event_text('privacy_3d_parties_agreement', :before_text => privacy_3d_parties_agreement) %>
+  </fieldset>
+  <%= booking_fields.hidden_field :lock_version %>
+<% end %>
+<!--[eoform:tbbooking]-->

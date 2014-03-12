@@ -1,0 +1,13 @@
+<tbody>
+  <%= dtheader("Payment : #{@tbbooking.fdpaymentmethodid == 'I' ? 'Invoice' : 'Account'}") %>
+    <%= dtfield @tbbooking, :fdbillcontact %>
+    <%= dtfield @tbbooking, :fdbill_job_title %>
+    <%= dtfield @tbbooking, :fdbill_address_line_1 %>
+    <% ('fdbill_address_line_2'..'fdbill_address_line_5').each do |field| %>
+      <%= dtfield @tbbooking, field.to_sym unless @tbbooking.send(field).blank? %>
+    <% end %>
+    <%= dtfield @tbbooking, :fdbillpostcode %>
+    <%= dtfield @tbbooking, :fdbilltel %>
+    <%= dtfield @tbbooking, :fdbillfax %>
+    <%= dtfield @tbbooking, :fdbillemail %>
+</tbody>

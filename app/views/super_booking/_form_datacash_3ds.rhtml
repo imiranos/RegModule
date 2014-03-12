@@ -1,0 +1,9 @@
+<div id="online_text" class="long_text">
+   <%= simple_format_and_link(@event.get_text('before_datacash_3d')) %>
+   <form id="downloadForm" name="downloadForm" action="<%= @payment_gateway_response.acs_url %>" method="POST">
+     <input type="hidden" name="PaReq" value="<%= @payment_gateway_response.pareq %>"/>
+     <input type="hidden" name="TermUrl" value="<%= request.protocol + request.host_with_port + url_for(:action => 'datacash_3ds_callback') %>"/>
+     <input type="hidden" name="MD" value="<%= @payment_gateway_response.md %>"/>
+     <p style="text-align: right;"><input type="submit" name="commit" value="Proceed to card issuers verification page"></p>
+   </form>
+</div>

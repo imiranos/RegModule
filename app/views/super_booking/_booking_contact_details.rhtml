@@ -1,0 +1,27 @@
+<tbody>
+  <%= dtheader('Booking details') %>
+    <%= dtfield @booking, :refnumber unless @booking.pending_online? %>
+    <%= dtfield @booking, :fullname %>
+    <%= dtfield @booking, :fdjob_title %>
+    <%= dtfield @booking, :fdorganisation %>
+    <%= dtfield @booking, :fdaddress_line_1 %>
+    <% ('2'..'5').each do |num| %>
+      <%= dtfield @booking, "fdaddress_line_#{num}".to_sym unless @booking.send("fdaddress_line_#{num}").blank? %>
+    <% end %>
+    <%= dtfield @booking, :fdpostcode %>
+    <%= dtfield @booking, :fdcountry %>
+    <%= dtfield @booking, :fdtel %>
+    <%= dtfield @booking, :fdfax %>
+    <% if session[:realm] == 'delegate'  %>
+      <%= dtfield @booking, :fdemail %>
+    <% else %>
+      <%= dtfield(@booking, :fdemail) do |content|
+        buffer = h(content)
+        if @realm == 'coordinator' && @event.status <= :finished && params[:action] == 'show' && !@booking.new_record?
+          buffer << ' '
+          buffer <<  ajax_link_to_remote(:link_label => 'Resend confirmation', :url => {:action => :send_email_reminder}, :id_base => 'send_booking_reminder', :class => :buttlink)
+        end
+        buffer
+      end %>
+    <% end %>
+</tbody>

@@ -1,0 +1,45 @@
+<% enabled_cards = ActiveMerchant::Billing::DataCashGateway.supported_cardtypes - [:discover, :jcb, :laser, :diners_club] %>
+<% enabled_cards -= [:maestro, :switch] unless params[:realm] == 'delegate' && @event.online_payment_account.options[:three_d_secure_enabled] %>
+<% form_tag({:action => :pay}, :method => :post) do %>
+  <fieldset>
+    <legend>Card details</legend>
+    <dl>
+      <%= wrap_for_form(:card_type) { select_tag :cc_type, options_for_select(enabled_cards.map { |t| [t.to_s.humanize, t.to_s] })  } %>
+      <%= wrap_for_form('Card_number*') { text_field_tag(:cc_number) + online_card_error_for(:number) } %>
+      <%= wrap_for_form('Card security code (CV2)*') { text_field_tag(:cc_cvv2, nil, :size => 4) + online_card_error_for(:verification_value) } %>
+      <%= wrap_for_form('Card holder*') do
+           content_tag(:label, 'First name ' + text_field_tag(:cc_first_name, nil, :size => 15)) + online_card_error_for(:first_name) + ' ' +
+           content_tag(:label, 'Last name ' + text_field_tag(:cc_last_name, nil, :size => 15)) + online_card_error_for(:last_name)
+      end %>
+      <%= wrap_for_form('Card expiry date (MM YYYY)*') do
+           content_tag(:label, 'Month ' + text_field_tag(:cc_month, nil, :size => 2, :maxlength => 2)) +
+           online_card_error_for(:month) + ' ' +
+
+           content_tag(:label, 'Year ' + text_field_tag(:cc_year, nil, :size => 4, :maxlength => 4)) +
+           online_card_error_for(:year)
+      end %>
+      <%= wrap_for_form('card issue number (Solo only)') do
+           text_field_tag(:cc_issue_number, nil, :size => 2, :maxlength => 2) + 
+           online_card_error_for(:issue_number)
+      end %>
+      <%= wrap_for_form('card start date (Solo only)') do
+           content_tag(:label, 'Month ' + text_field_tag(:cc_start_month, nil, :size => 2, :maxlength => 2)) +
+           online_card_error_for(:start_month) + ' ' +
+           content_tag(:label, 'Year ' + text_field_tag(:cc_start_year, nil, :size => 4, :maxlength => 4)) +
+           online_card_error_for(:start_year)
+     end %>
+    </dl>
+  </fieldset>
+  <%= form_error_alert @booking %>
+  <fieldset>
+    <legend>Billing details</legend>
+    <dl>
+      <% fields_for :booking, @booking, :builder => LabelledForm::LabelledFormBuilder do |booking_fields| %>
+        <%= render :partial => 'super_booking/booking_billing_details', :locals => {:booking_fields => booking_fields} %>
+      <% end %>
+    </dl>
+  </fieldset>
+  <dl>
+    <dt></dt><dd style="text-align: right;"><%= submit_tag "Confirm payment" %></dd>
+  </dl>
+<% end %>

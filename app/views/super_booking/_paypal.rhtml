@@ -1,0 +1,12 @@
+  <% payment_service_for @booking.refnumber, @event.fdpaypal_account,
+       :currency => @receipt.total.currency,
+       :amount =>  @receipt.total.to_s,
+       :service => :paypal do |service|
+       service.item_name "#{@booking.refnumber} #{truncate(@event.fdtitle)}"
+       service.invoice "#{@receipt.id}"
+       service.tax '0.00'
+       service.notify_url(AppConstants.get(:paypal_return_host) + receive_pp_notification_path(@booking.current_payment_receipt))
+       service.return_url request.protocol + request.host_with_port + url_for(:action => :after_paypal)
+       service.cancel_return_url request.protocol + request.host_with_port + url_for(:action => :show) %>
+    <p class="center_text"><%= submit_tag 'Pay now with Credit/Debit card' %><p/>
+  <% end %>

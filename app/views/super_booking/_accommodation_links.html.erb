@@ -1,0 +1,10 @@
+<% accommodations =  @booking.packages.group_by { |pkg| pkg.accommodation_code } %>
+<% accommodations.keys.compact.each do |accom_code| %>
+<tr>
+  <td colspan="2" class="book_now">
+     <h3>Accommodation at special rate available
+     <%= ("for " + (accommodations[accom_code]).map { |pkg| h(pkg.fdname) }.join(', ')) unless accommodations.keys.compact.size == 1  %></h3>
+     <h2 class="center_text"><%= link_to 'Book now', "#{AppConstants.get(:accommodation_base_link)}/#{accom_code}" %></h2>
+  </td>
+</tr>
+<% end %>

@@ -1,0 +1,33 @@
+<div id="complete_text" class="long_text">
+  <%= event_text(@notification_type) %>
+</div>
+<% if @receipt.fdpayment_provider == 'paypal' || (!@booking.pending_online?) %>
+  <p style="text-align: center;">
+    <%= link_to 'Show all delegate itineraries', itineraries_resource, :class => "buttlink" %>
+  </p>
+<% end %>
+
+<table class="std">
+  <caption>
+    <%=h "#{@receipt.pending_online? ? @event.codwprefix : @booking.refnumber}" %>
+  </caption>
+  <%= render :partial => 'super_booking/booking_contact_details' %>
+  <% unless @booking.pending_online? %>
+    <%= render :partial => 'super_booking/accommodation_links' %>
+  <% end %>
+  <% @delegates.each do |delegate| %>
+    <% if delegate.fdcancelled.blank?  %>
+      <tr><td colspan="2"><%= render :partial => 'super_booking_delegates/delegate', :locals => { :delegate => delegate } %></td></tr>
+    <% end %>
+  <% end %>
+  <tbody>
+    <%= dtheader('Total') %>
+    <%= dtfield(@book, :total) { "#{money_format(@booking.total)} tax inclusive" } %>
+  </tbody>
+</table>
+<% unless @booking.pending_online? %>
+  <p style="text-align: center;">
+    <%= link_to 'Show all delegate itineraries', itineraries_resource, :class => "buttlink" %>
+  </p>
+
+<% end %>

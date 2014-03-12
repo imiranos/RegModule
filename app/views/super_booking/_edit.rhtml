@@ -1,0 +1,8 @@
+<% form_tag({:action => 'update'}, :method => :put) do %>
+  <%= render :partial => 'super_booking/form' %>
+  <div style="text-align:right;">
+    <%= submit_tag('Update', :id => 'submit_form_yes') %>&nbsp;
+    <%= submit_tag('Review delegates', :id => 'submit_form_no') %>&nbsp;
+    <%= submit_tag('Exit without saving', :id => 'submit_form_exit') %>&nbsp;
+  </div>
+<% end %>

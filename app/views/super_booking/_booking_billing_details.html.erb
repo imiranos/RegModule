@@ -1,0 +1,11 @@
+      <%= booking_fields.text_field :fdbill_contact %>
+      <%= booking_fields.text_field :fdbill_job_title %>
+      <%= booking_fields.text_field :fdbill_organisation %>
+      <% ('1'..'5').each do |num| %>
+        <%= booking_fields.text_field "fdbill_address_line_#{num}".to_sym %>
+      <% end %>
+      <%= booking_fields.text_field :fdbill_postcode %>
+      <%= booking_fields.country_select :fdbill_country %>
+      <%= booking_fields.text_field :fdbill_tel %>
+      <%= booking_fields.text_field :fdbill_fax %>
+      <%= booking_fields.text_field :fdbill_email %>
